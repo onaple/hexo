@@ -87,31 +87,24 @@
 
 
 
-<meta name="description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。
-作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。
-
-NFS（Network File System）即网络文件系统NTFS (New Technology File System">
+<meta name="description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。 作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。  NFS（Network File System）即网络文件系统NTFS (New Technology File System">
+<meta name="keywords" content="linux,文件系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux 文件系统">
 <meta property="og:url" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/index.html">
 <meta property="og:site_name" content="onaple‘s Blog">
-<meta property="og:description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。
-作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。
-
-NFS（Network File System）即网络文件系统NTFS (New Technology File System">
-<meta property="og:image" content="http://onaple.duoshuo.com/linux-文件系统/image1.png">
-<meta property="og:image" content="http://onaple.duoshuo.com/linux-文件系统/图片2.png">
-<meta property="og:image" content="http://onaple.duoshuo.com/linux-文件系统/图片4.png">
-<meta property="og:image" content="http://onaple.duoshuo.com/linux-文件系统/图片5.png">
-<meta property="og:image" content="http://onaple.duoshuo.com/linux-文件系统/图片6.png">
+<meta property="og:description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。 作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。  NFS（Network File System）即网络文件系统NTFS (New Technology File System">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/image1.png">
+<meta property="og:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/图片2.png">
+<meta property="og:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/图片4.png">
+<meta property="og:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/图片5.png">
+<meta property="og:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/图片6.png">
 <meta property="og:updated_time" content="2017-03-05T15:34:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 文件系统">
-<meta name="twitter:description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。
-作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。
-
-NFS（Network File System）即网络文件系统NTFS (New Technology File System">
-<meta name="twitter:image" content="http://onaple.duoshuo.com/linux-文件系统/image1.png">
+<meta name="twitter:description" content="文件系统概念：是操作系统的一部分，用来管理磁盘空间，向外提供操纵接口。比如fread，fwrite，fopen等系统调用就是文件系统提供的功能。 作用：管理用户的逻辑文件，替用户保存逻辑文件到存储块的映射。并提供缓存机制，做到存取速度快，存储空间利用率高，数据安全性好。  NFS（Network File System）即网络文件系统NTFS (New Technology File System">
+<meta name="twitter:image" content="http://onaple.duoshuo.com/2017/03/05/linux-文件系统/linux-文件系统/image1.png">
 
 
 
@@ -565,8 +558,8 @@ NFS（Network File System）即网络文件系统NTFS (New Technology File Syste
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/05/linux-内存管理/" rel="next" title="linux 内存管理">
-                <i class="fa fa-chevron-left"></i> linux 内存管理
+              <a href="/2017/03/05/linux-杂记/" rel="next" title="linux 进程与线程">
+                <i class="fa fa-chevron-left"></i> linux 进程与线程
               </a>
             
           </div>
@@ -575,8 +568,8 @@ NFS（Network File System）即网络文件系统NTFS (New Technology File Syste
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/05/linux-杂记/" rel="prev" title="linux 进程与线程">
-                linux 进程与线程 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/05/linux-内存管理/" rel="prev" title="linux 内存管理">
+                linux 内存管理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -657,7 +650,7 @@ NFS（Network File System）即网络文件系统NTFS (New Technology File Syste
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -666,7 +659,7 @@ NFS（Network File System）即网络文件系统NTFS (New Technology File Syste
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -675,7 +668,7 @@ NFS（Network File System）即网络文件系统NTFS (New Technology File Syste
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

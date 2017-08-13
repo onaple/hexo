@@ -87,34 +87,18 @@
 
 
 
-<meta name="description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。
-编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。
-汇编产生机器指令。
-ELF文件（这里指.o文件）中包含什么？
-
-文件头
-段表：包含了段的基本属性，例如每个段的段名，段的长度">
+<meta name="description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。 编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。 汇编产生机器指令。 ELF文件（这里指.o文件）中包含什么？  文件头 段表：包含了段的基本属性，例如每个段的段名，段的长度">
+<meta name="keywords" content="linux,x86,编译原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="x86系统编译原理">
 <meta property="og:url" content="http://onaple.duoshuo.com/2017/03/05/x86系统编译原理/index.html">
 <meta property="og:site_name" content="onaple‘s Blog">
-<meta property="og:description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。
-编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。
-汇编产生机器指令。
-ELF文件（这里指.o文件）中包含什么？
-
-文件头
-段表：包含了段的基本属性，例如每个段的段名，段的长度">
+<meta property="og:description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。 编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。 汇编产生机器指令。 ELF文件（这里指.o文件）中包含什么？  文件头 段表：包含了段的基本属性，例如每个段的段名，段的长度">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-03-05T12:18:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="x86系统编译原理">
-<meta name="twitter:description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。
-编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。
-汇编产生机器指令。
-ELF文件（这里指.o文件）中包含什么？
-
-文件头
-段表：包含了段的基本属性，例如每个段的段名，段的长度">
+<meta name="twitter:description" content="编译过程简述编译：预处理主要处理源文件中以“#”开头的预编译指令，例如#include，#define，#ifdef，#pragma等。 编译通过词法分析（生成一系列记号），语法分析（根据一系列记号生成语法树），语义分析（对语法树每一部分做有效性检查），优化后生成汇编代码。 汇编产生机器指令。 ELF文件（这里指.o文件）中包含什么？  文件头 段表：包含了段的基本属性，例如每个段的段名，段的长度">
 
 
 
@@ -828,6 +812,10 @@ file libfg.so.1
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/08/13/代码覆盖率/" rel="prev" title="代码覆盖率">
+                代码覆盖率 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -906,7 +894,7 @@ file libfg.so.1
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -915,7 +903,7 @@ file libfg.so.1
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -924,7 +912,7 @@ file libfg.so.1
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

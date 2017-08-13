@@ -1,0 +1,1056 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,进程,线程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="什么是进程？
+进程是资源分配和和独立运行的单位；
+进程是操作系统中可执行程序的一次执行，换句话说进程就是拥有资源（cpu,内存，磁盘，进程ID，文件描述符，虚拟地址空间，端口号等）的程序；它是动态的；
+一个进程是由程序控制块（pcb也就是task_struct结构体）,代码和数据组成；其中进程控制块是描述进程的资源和运行状态等；它有内核来管理；
+在linux中可以通过ps，pstree来查看当前系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 进程与线程">
+<meta property="og:url" content="http://onaple.duoshuo.com/2017/03/05/linux-杂记/index.html">
+<meta property="og:site_name" content="onaple‘s Blog">
+<meta property="og:description" content="什么是进程？
+进程是资源分配和和独立运行的单位；
+进程是操作系统中可执行程序的一次执行，换句话说进程就是拥有资源（cpu,内存，磁盘，进程ID，文件描述符，虚拟地址空间，端口号等）的程序；它是动态的；
+一个进程是由程序控制块（pcb也就是task_struct结构体）,代码和数据组成；其中进程控制块是描述进程的资源和运行状态等；它有内核来管理；
+在linux中可以通过ps，pstree来查看当前系">
+<meta property="og:updated_time" content="2017-03-05T10:13:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux 进程与线程">
+<meta name="twitter:description" content="什么是进程？
+进程是资源分配和和独立运行的单位；
+进程是操作系统中可执行程序的一次执行，换句话说进程就是拥有资源（cpu,内存，磁盘，进程ID，文件描述符，虚拟地址空间，端口号等）的程序；它是动态的；
+一个进程是由程序控制块（pcb也就是task_struct结构体）,代码和数据组成；其中进程控制块是描述进程的资源和运行状态等；它有内核来管理；
+在linux中可以通过ps，pstree来查看当前系">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://onaple.duoshuo.com/2017/03/05/linux-杂记/"/>
+
+
+
+
+
+  <title> linux 进程与线程 | onaple‘s Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?979c5c7c8651356fd2b2fc892b7537af";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">onaple‘s Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">Good good study, day day up...</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://onaple.duoshuo.com/2017/03/05/linux-杂记/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="onaple">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="onaple‘s Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="onaple‘s Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                linux 进程与线程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-05T18:00:46+08:00">
+                2017-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/05/linux-杂记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/linux-杂记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="什么是进程？"><a href="#什么是进程？" class="headerlink" title="什么是进程？"></a>什么是进程？</h1><ol>
+<li>进程是资源分配和和独立运行的单位；</li>
+<li>进程是操作系统中可执行程序的一次执行，换句话说进程就是拥有资源（cpu,内存，磁盘，进程ID，文件描述符，虚拟地址空间，端口号等）的程序；它是动态的；</li>
+<li>一个进程是由程序控制块（pcb也就是task_struct结构体）,代码和数据组成；其中进程控制块是描述进程的资源和运行状态等；它有内核来管理；</li>
+<li>在linux中可以通过ps，pstree来查看当前系统中的进程；</li>
+</ol>
+<h1 id="什么是线程？"><a href="#什么是线程？" class="headerlink" title="什么是线程？"></a>什么是线程？</h1><ol>
+<li>线程属于轻量级进程，一个进程可以拥有多个线程；linux下线程就是轻量级进程，所以线程的概念和进程是大同小异的。只不过是共享了大部分资源的进程罢了。</li>
+<li>线程是进程的一个执行流，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。线程是进程中的最小调度单位；</li>
+<li>用户线程指的是完全建立在用户空间的线程库，用户线程的建立，同步，销毁，调度完全在用户空间完成，不需要内核的帮助。因此这种线程的操作是极其快速的且低消耗的。</li>
+<li>用户态线程和内核态线程；主要的区分就是“谁来管理”线程，用户态是用户管理，内核态是内核管理（但肯定要提供一些API，例如创建）。</li>
+<li>线程的模型有哪些<ul>
+<li>n : 1 多个线程对应一个核心线程(进程); 线程的创建和销毁以及管理全部在用户层的线程库中实现，在内核层完全不知情，内核层看到的只是一个个进程。所以内核会以进程为单位调度任务运行。</li>
+<li>1：1    一个线程对应核心线程(进程); 在1:1模式下，线程的创建，调度，销毁全由内核完成，而其他操作则由线程库完成。</li>
+<li>m ：n ： 结合上面两种方式，如某些进程一一对应核内线程，其他线程完全在用户态实现。</li>
+</ul>
+</li>
+</ol>
+<h1 id="linux是如何管理进程的？"><a href="#linux是如何管理进程的？" class="headerlink" title="linux是如何管理进程的？"></a>linux是如何管理进程的？</h1><ol>
+<li>每个进程在linux内核拥有一个task_struct结构体（进程控制块的具体定义），里面包含了进程几乎所有的信息。在linux下，所谓的进程管理，就是反复操纵task_struct结构体的过程一点也不为过。</li>
+<li>操作系统对进程的所有管理都是围绕task_struct结构体为中心构建的。</li>
+</ol>
+<blockquote>
+<p>例如，给某个进程发送kill信息，操作系统就会根据task_struct结构体中的信息释放进程所占用的内存，信号量，打开文件相关的资源等等，然后当进程被切换出去时释放task_struct结构体，至此，系统再没有保存该进程的任意一点信息，标志着进程的死亡。</p>
+<p>再例如，进程的调度，由于每个进程都有其自己的上下文环境，或者说是当前系统状态的总和。被切换出去进程的这种系统状态需要保存到task_struct结构体中，以便下次恢复。而被切换进来的进程的上下文环境从哪里来呢？显而易见，在这个被调度进来的进程在真正运行之前，调度程序会从该进程的task_struct结构体中找到之前保存的上下文环境，然后将系统恢复到之前保存的状态，被调度进来的程序才真正开始运行。</p>
+</blockquote>
+<h1 id="进程的创建过程："><a href="#进程的创建过程：" class="headerlink" title="进程的创建过程："></a>进程的创建过程：</h1><ol>
+<li>操作系统给新进程分配一个全局唯一的pid号;</li>
+<li>并在内核空间中创建和分配诸如task_struct结构体，kernel堆栈等必要的数据结构和物理资源。</li>
+<li>然后复制父进程的与信号有关，与文件系统有关的运行环境。最后还会给task_struct结构体某些变量赋值，将来使用这些变量来将新进程运行的某些环境（如kernel栈的起始地址，EAX的初值等）设置为子进程自己独有的运行环境。并加入运行队列中，之后就是调度程序的事了。</li>
+<li>这个过程中涉及到了写时拷贝技术。在Linux程序中，fork（）会产生一个和父进程完全相同的子进程，但子进程在此后多会exec系统调用，出于效率考虑，linux中引入了“写时复制“技术，也就是只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。</li>
+</ol>
+<h1 id="写时拷贝技术"><a href="#写时拷贝技术" class="headerlink" title="写时拷贝技术:"></a>写时拷贝技术:</h1><blockquote>
+<p><a href="http://blog.sina.cn/dpool/blog/s/blog_96757e4b01011b1n.html?vt=4" target="_blank" rel="external">http://blog.sina.cn/dpool/blog/s/blog_96757e4b01011b1n.html?vt=4</a> </p>
+</blockquote>
+<p>在Linux程序中，fork（）会产生一个和父进程完全相同的子进程，但子进程在此后多会exec系统调用，出于效率考虑，linux中引入了“写时复制“技术，也就是只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。在fork之后exec之前两个进程用的是相同的物理空间（内存区），子进程的代码段、数据段、堆栈都是指向父进程的物理空间，也就是说，两者的虚拟空间不同，但其对应的物理空间是同一个。当子进程中有更改相应段的行为发生时，再为子进程相应的段分配物理空间，如果不是因为exec，内核会给子进程的数据段、堆栈段分配相应的物理空间（至此两者有各自的进程空间，互不影响），而代码段继续共享父进程的物理空间（两者的代码完全相同）。而如果是因为exec，由于两者执行的代码不同，子进程的代码段也会分配单独的物理空间。</p>
+<p>这就是分配内存的拖延战术，直到不得不做。操作系统中与此类似思想的还有页高速缓存器（page cache）。也就是，当有程序试图将数据写入文件的时候，linux操作系统并不会马上将数据写入disk中，而是将它们临时放在memory的一块区域。这块区域就叫做page cache。只有在关闭文件或者关机时，才有内核线程将page cache中的数据刷到磁盘中。这也就是非正常退出时，数据会损坏的原因。</p>
+<h1 id="在Linux中主要提供了fork、vfork、clone三个进程创建方法。"><a href="#在Linux中主要提供了fork、vfork、clone三个进程创建方法。" class="headerlink" title="在Linux中主要提供了fork、vfork、clone三个进程创建方法。"></a>在Linux中主要提供了fork、vfork、clone三个进程创建方法。</h1><blockquote>
+<p>以下总结来源:<a href="http://www.360doc.com/content/14/1231/11/14530056_437075775.shtml" target="_blank" rel="external">http://www.360doc.com/content/14/1231/11/14530056_437075775.shtml</a> </p>
+</blockquote>
+<p>在linux源码中这三个调用的执行过程是执行fork(),vfork(),clone()时，通过一个系统调用表映射到sys_fork(),sys_vfork(),sys_clone(),再在这三个函数中去调用do_fork()去做具体的创建进程工作。</p>
+<ol>
+<li>fork创建一个进程时，子进程只是完全复制父进程的资源，复制出来的子进程有自己的task_struct结构和pid,但却复制父进程其它所有的资源。这样看来，fork是一个开销十分大的系统调用，这些开销并不是所有的情况下都是必须的，比如某进程fork出一个子进程后，其子进程仅仅是为了调用exec执行另一个可执行文件，那么在fork过程中对于虚存空间的复制将是一个多余的过程。但由于现在Linux中是采取了copy-on-write(COW写时复制)技术，为了降低开销，fork最初并不会真的产生两个不同的拷贝，因为在那个时候，大量的数据其实完全是一样的。写时复制是在推迟真正的数据拷贝。所以有了写时复制后呢，vfork其实现意义就不大了。</li>
+<li>vfork系统调用不同于fork，用vfork创建的子进程与父进程共享地址空间，也就是说子进程完全运行在父进程的地址空间上，如果这时子进程修改了某个变量，这将影响到父进程。但此处有一点要注意的是用vfork()创建的子进程必须显示调用exit()来结束，否则子进程将不能结束，而fork()则不存在这个情况。用 vfork创建子进程后，父进程会被阻塞直到子进程调用exec(exec，将一个新的可执行文件载入到地址空间并执行之。)或exit。vfork的好处是在子进程被创建后往往仅仅是为了调用exec执行另一个程序，因为它就不会对父进程的地址空间有任何引用，所以对地址空间的复制是多余的 ，因此通过vfork共享内存可以减少不必要的开销。</li>
+<li>clone :系统调用fork()和vfork()是无参数的，而clone()则带有参数。fork()是全部复制，vfork()是共享内存，而clone() 是则可以将父进程资源有选择地复制给子进程，而没有复制的数据结构则通过指针的复制让子进程共享，具体要复制哪些资源给子进程，由参数列表中的 clone_flags来决定。另外，clone()返回的是子进程的pid。<br>所以，这个就和上面说的轻量级进程联系起来，也可以这样说，linux通过clone调用生成线程。</li>
+</ol>
+<h1 id="fork，vfork，clone的区别"><a href="#fork，vfork，clone的区别" class="headerlink" title="fork，vfork，clone的区别"></a>fork，vfork，clone的区别</h1><ol>
+<li><p>fork出来的子进程是父进程的一个拷贝，即，子进程从父进程得到了数据段和堆栈段的拷贝，这些需要分配新的内存；而对于只读的代码段，通常使用共享内存的方式访问；而vfork则是子进程与父进程共享内存空间, 子进程对虚拟地址空间任何数据的修改同样为父进程所见；clone则由用户通过参clone_flags 的设置来决定哪些资源共享，哪些资源拷贝。 </p>
+</li>
+<li><p>fork不对父子进程的执行次序进行任何限制，fork返回后，子进程和父进程都从调用fork函数的下一条语句开始行，但父子进程运行顺序是不定的，它取决于内核的调度算法；而在vfork调用中，子进程先运行，父进程挂起，直到子进程调用了exec或exit之后，父子进程的执行次序才不再有限制；clone中由标志CLONE_VFORK来决定子进程在执行时父进程是阻塞还是运行，若没有设置该标志，则父子进程同时运行，设置了该标志，则父进程挂起，直到子进程结束为止。<br>他们成功执行时，父进程中返回子进程的进程号，在子进程中返回0。</p>
+</li>
+</ol>
+<h1 id="进程的调度"><a href="#进程的调度" class="headerlink" title="进程的调度"></a>进程的调度</h1><p>主要结构就是运行队列(双向循环链表)。为什么会有运行队列的存在呢?<br>当Linux内核要寻找一个新的进程在CPU上运行时，必须只考虑处于可运行状态的进程，（即在TASK_RUNNING状态的进程），因为扫描整个进程链表是相当低效的，所以引入了可运行状态进程的双向循环链表，也叫运行队列（runqueue）。运行队列容纳了系统中所有可以运行的进程，它是一个双向循环队列。</p>
+<p>也就是说，为了实现进程的调度，内核维护了一个叫做运行队列的数据结构。在这个数据结构中，active，expired，arrays是主要的三个结构。目前，咱们几个了解这三个就足够了。arrays也就是一个拥有两个成员的数组，每个数组有140个双向链表（也就是说，所有的就绪进程，按照时间片是否用完分成两个部分），对应了0~139 的140个优先级。active和expired分别指向arrays的两个成员。进程调度时，从active指针选择下一个要运行的程序。active中时间片用完的进程会被移动到expired队列，并且时间片会被重新计算，若active队列再无成员，则两个指针指向互换。</p>
+<p>linux进程主要分为 实时进程（例如键盘中输入字母或者鼠标点击之类的） 和 交互式进程与批处理进程（例如word程序，你总是写一会停一会）。内核不会动态调整前者的优先级，如需调整，则需要调用特殊的系统调用。而且，前者的优先级别最高。只有没有实时进程的时候，交互式或者批处理才会被调度执行。而后者的优先级会被内核动态调整。</p>
+<h1 id="进程有哪些调度策略？"><a href="#进程有哪些调度策略？" class="headerlink" title="进程有哪些调度策略？"></a>进程有哪些调度策略？</h1><p>这时候你分开说。对于实时进程，一般采用的是FIFO或者RR（轮询）机制。而对于交互式或者批处理进程，则采用动态调整优先级加运行队列机制来执行调度。这里有个大原则，如果有实时进程，那么交互式或者批处理则不会被执行。这个从进程优先级就可以看出来：实时（0~99），交互式批处理（100~139）。这时，你还可以举个例子。比如，你正在复制100文件，文件是一个一个被复制的，当复制到第50个的时候，你点了一下停止符号，它不会说是继续第51个文件的复制，而是直接停止。说明你鼠标的点击被插入到第51个文件之前了。所以实时进程永远比后者优先级高。</p>
+<h1 id="进程会在什么时候被调度"><a href="#进程会在什么时候被调度" class="headerlink" title="进程会在什么时候被调度?"></a>进程会在什么时候被调度?</h1><p>调度一般在进程退出内核态时，因为这时进程已经释放了可能导致内核死锁的资源。除了时间片用完触发调度，内核线程会在执行一些比较费时的任务时，自己调用调度函数，使其他进程有机会执行。</p>
+<p>首先进程调度不应该产生内核死锁之类的问题。如果进程在内核态，则它可能会占有产生死锁的资源（比如，进程想要操纵硬件必须使用系统调用。想想这样一种情况：用户想要使用打印机这种独占资源，内核线程，也就是代表用户进程在内核状态执行的那个线程，它一定改变了代表打印机的结构的某个标志位，或者持有打印机结构体内的自旋锁，互斥锁之类的资源，标志着打印机正在被使用，本来打算在返回用户态时释放这种互斥锁资源，但调度函数来了，我不管，我就要让你现在退出。然后该进程带着互斥锁退出。当下一个进程进来，也要使用打印机，这时，该进程向内核申请打印机，而内核却发现打印机正在被使用，所以内核等待打印机退出，而持有互斥锁的进程已经被内核踢出cpu了，谈何释放？所以这时，所有的进程都在等，被调度进来进程陷入内核出不来了,整条逻辑陷入了无限循环，如果是单核，那么死锁便产生了）。</p>
+<h1 id="关于僵尸进程"><a href="#关于僵尸进程" class="headerlink" title="关于僵尸进程"></a>关于僵尸进程</h1><p>僵尸进程指的是那些虽然已经终止的进程，但仍然保留一些信息，等待其父进程为其收尸。</p>
+<ol>
+<li><p>生的原因：<br>父进程调用fork创建子进程后，子进程运行直至其终止，它立即从内存中移除，但进程描述符仍然保留在内存中（进程描述符占有极少的内存空间）。子进程的状态变成EXIT_ZOMBIE，并且向父进程发送SIGCHLD 信号，父进程此时应该调用 wait() 系 统调用来获取子进程的退出状态以及其它的信息。在 wait 调用之后，僵尸进程就完全从内存中移除。因此一个僵尸存在于其终止到父进程调用 wait 等函数这个时间的间隙，一般很快就消失，但如果编程不合理，父进程从不调用 wait 等系统调用来收集僵尸进程，那么这些进程会一直存在内存中。比如父进程死了，或者父进程忽略了SIGCHLD信号，或者父进程对SIGCHLD信号定义的信号处理函数有误。</p>
+</li>
+<li><p>如何避免：不能使用 kill 后接 SIGKILL 信号这样的命令像杀死普通进程一样杀死僵尸进程，因为僵尸进程是已经死掉的进程，它不能再接收任何信号。事实上，如果系统中僵尸进程并不多的话，我们也无需去消除它们，少数的僵尸进程并不会对系统的性能有什么影响。</p>
+</li>
+</ol>
+<p>那么在编程时，如果能避免系统中大量产生僵尸进程呢？根据上面描述的，子进程在终止时会向父进程发 SIGCHLD 信号，Linux 默认是忽略该信号的，我们可以显示安装该信号，在信号处理函数中调用 wait 等函数来为其收尸，这样就能避免僵尸进程长期存在于系统中了。<br>以上都是复制下面这个链接的，</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/hazir/p/zombie_process.html" target="_blank" rel="external">http://www.cnblogs.com/hazir/p/zombie_process.html</a></p>
+</blockquote>
+<ol>
+<li><p>危害：</p>
+<ul>
+<li>僵尸进程的pid不会释放，意味着如果有海量的僵尸进程，则会占满进程表项，是的后续进程无法执行fork（）</li>
+<li>内核栈无法释放，这个资源是很珍贵的。根本原因在于，task_stauct结构体没有释放。</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatRewardImage.png" alt="onaple WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipayRewardImage.jpg" alt="onaple Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+            <a href="/tags/线程/" rel="tag"># 线程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/05/linux-文件系统/" rel="next" title="linux 文件系统">
+                <i class="fa fa-chevron-left"></i> linux 文件系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/05/linux-基础常识/" rel="prev" title="linux 基础常识">
+                linux 基础常识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/05/linux-杂记/"
+           data-title="linux 进程与线程" data-url="http://onaple.duoshuo.com/2017/03/05/linux-杂记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="onaple" />
+          <p class="site-author-name" itemprop="name">onaple</p>
+          <p class="site-description motion-element" itemprop="description">Talk is cheap, show me the code.  ——Linus Torvalds</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/onaple" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/aoo_wangxu" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是进程？"><span class="nav-number">1.</span> <span class="nav-text">什么是进程？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是线程？"><span class="nav-number">2.</span> <span class="nav-text">什么是线程？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux是如何管理进程的？"><span class="nav-number">3.</span> <span class="nav-text">linux是如何管理进程的？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程的创建过程："><span class="nav-number">4.</span> <span class="nav-text">进程的创建过程：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写时拷贝技术"><span class="nav-number">5.</span> <span class="nav-text">写时拷贝技术:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在Linux中主要提供了fork、vfork、clone三个进程创建方法。"><span class="nav-number">6.</span> <span class="nav-text">在Linux中主要提供了fork、vfork、clone三个进程创建方法。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fork，vfork，clone的区别"><span class="nav-number">7.</span> <span class="nav-text">fork，vfork，clone的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程的调度"><span class="nav-number">8.</span> <span class="nav-text">进程的调度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程有哪些调度策略？"><span class="nav-number">9.</span> <span class="nav-text">进程有哪些调度策略？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程会在什么时候被调度"><span class="nav-number">10.</span> <span class="nav-text">进程会在什么时候被调度?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于僵尸进程"><span class="nav-number">11.</span> <span class="nav-text">关于僵尸进程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">onaple</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"onaple"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

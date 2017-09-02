@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="内存管理,LINUX," />
+  <meta name="keywords" content="启动过程,LINUX," />
 
 
 
@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="CPU位数和操作系统位数的关系：操作系统的位数其实是说的CPU的位数。因为计算机的所有功能都是基于CPU的指令集，也就是说，操作系统的所有功能几乎都跟CPU指令集有关系，操作系统的所有功能都会被翻译成一组CPU指令集。64位CPU的指令集是64位的，要想使用64位的功能，那么操作系统也必须是64位的。比如操作系统里的寻址，数据的大小都可以为64位。当然，64位CPU也会保存32位指令集，所以也兼容">
-<meta name="keywords" content="内存管理,LINUX">
+<meta name="description" content="linux开机启动过程,必须经过加载BOIS、读取MBR、Boot Loader、加载内核、启动init进程并确定运行等级、执行初始化脚本、启动内核模块、执行对应运行等级的初始化脚本、个性化设置、进入登录状态的这十个步骤  一、 BIOS (Basic Input Output System)基本输入输出系统 按下电源按钮触发CPU的reset引脚。CS寄存器会设值为0xffff;eip = 0">
+<meta name="keywords" content="启动过程,LINUX">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux 内存管理">
-<meta property="og:url" content="http://onaple.duoshuo.com/2017/03/05/linux-内存管理/index.html">
+<meta property="og:title" content="LINUX启动过程">
+<meta property="og:url" content="http://onaple.duoshuo.com/2017/09/02/LINUX启动过程/index.html">
 <meta property="og:site_name" content="onaple‘s Blog">
-<meta property="og:description" content="CPU位数和操作系统位数的关系：操作系统的位数其实是说的CPU的位数。因为计算机的所有功能都是基于CPU的指令集，也就是说，操作系统的所有功能几乎都跟CPU指令集有关系，操作系统的所有功能都会被翻译成一组CPU指令集。64位CPU的指令集是64位的，要想使用64位的功能，那么操作系统也必须是64位的。比如操作系统里的寻址，数据的大小都可以为64位。当然，64位CPU也会保存32位指令集，所以也兼容">
+<meta property="og:description" content="linux开机启动过程,必须经过加载BOIS、读取MBR、Boot Loader、加载内核、启动init进程并确定运行等级、执行初始化脚本、启动内核模块、执行对应运行等级的初始化脚本、个性化设置、进入登录状态的这十个步骤  一、 BIOS (Basic Input Output System)基本输入输出系统 按下电源按钮触发CPU的reset引脚。CS寄存器会设值为0xffff;eip = 0">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-02T10:12:55.000Z">
+<meta property="og:updated_time" content="2017-09-02T10:14:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux 内存管理">
-<meta name="twitter:description" content="CPU位数和操作系统位数的关系：操作系统的位数其实是说的CPU的位数。因为计算机的所有功能都是基于CPU的指令集，也就是说，操作系统的所有功能几乎都跟CPU指令集有关系，操作系统的所有功能都会被翻译成一组CPU指令集。64位CPU的指令集是64位的，要想使用64位的功能，那么操作系统也必须是64位的。比如操作系统里的寻址，数据的大小都可以为64位。当然，64位CPU也会保存32位指令集，所以也兼容">
+<meta name="twitter:title" content="LINUX启动过程">
+<meta name="twitter:description" content="linux开机启动过程,必须经过加载BOIS、读取MBR、Boot Loader、加载内核、启动init进程并确定运行等级、执行初始化脚本、启动内核模块、执行对应运行等级的初始化脚本、个性化设置、进入登录状态的这十个步骤  一、 BIOS (Basic Input Output System)基本输入输出系统 按下电源按钮触发CPU的reset引脚。CS寄存器会设值为0xffff;eip = 0">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://onaple.duoshuo.com/2017/03/05/linux-内存管理/"/>
+  <link rel="canonical" href="http://onaple.duoshuo.com/2017/09/02/LINUX启动过程/"/>
 
 
 
 
 
-  <title> linux 内存管理 | onaple‘s Blog </title>
+  <title> LINUX启动过程 | onaple‘s Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -312,7 +312,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://onaple.duoshuo.com/2017/03/05/linux-内存管理/">
+  <link itemprop="mainEntityOfPage" href="http://onaple.duoshuo.com/2017/09/02/LINUX启动过程/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="onaple">
@@ -336,7 +336,7 @@
             
             
               
-                linux 内存管理
+                LINUX启动过程
               
             
           </h1>
@@ -351,8 +351,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-05T18:00:46+08:00">
-                2017-03-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-02T15:34:27+08:00">
+                2017-09-02
               </time>
             
 
@@ -392,8 +392,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/05/linux-内存管理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/linux-内存管理/" itemprop="commentCount"></span>
+                <a href="/2017/09/02/LINUX启动过程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/02/LINUX启动过程/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -419,68 +419,61 @@
       
 
       
-        <h1 id="CPU位数和操作系统位数的关系："><a href="#CPU位数和操作系统位数的关系：" class="headerlink" title="CPU位数和操作系统位数的关系："></a>CPU位数和操作系统位数的关系：</h1><p>操作系统的位数其实是说的CPU的位数。因为计算机的所有功能都是基于CPU的指令集，也就是说，操作系统的所有功能几乎都跟CPU指令集有关系，操作系统的所有功能都会被翻译成一组CPU指令集。64位CPU的指令集是64位的，要想使用64位的功能，那么操作系统也必须是64位的。比如操作系统里的寻址，数据的大小都可以为64位。当然，64位CPU也会保存32位指令集，所以也兼容32位操作系统。</p>
-<p>现在来说CPU位数。众所周知，CPU里有8个通用寄存器，AX/BX/CX/DX/SI/DI/BP/SP，<br>也就是说，由于64位CPU指令集会操作64位数据，如果寄存器是32位的，那么64位指令集便没有了可以运行的场所。所以，CPU位数说的是指令集的位数和通用寄存器的位数。</p>
-<p>下面是两个参考网站<br>位什么要分段分页？</p>
-<blockquote>
-<p><a href="http://www.2cto.com/os/201210/161572.html" target="_blank" rel="external">http://www.2cto.com/os/201210/161572.html</a><br><a href="http://www.cppblog.com/sixinquan/archive/2012/07/19/184234.html" target="_blank" rel="external">http://www.cppblog.com/sixinquan/archive/2012/07/19/184234.html</a></p>
+        <blockquote>
+<p>linux开机启动过程,必须经过加载BOIS、读取MBR、Boot Loader、加载内核、启动init进程并确定运行等级、执行初始化脚本、启动内核模块、执行对应运行等级的初始化脚本、个性化设置、进入登录状态的这十个步骤</p>
 </blockquote>
-<h1 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h1><h2 id="首先看一下分段的引入"><a href="#首先看一下分段的引入" class="headerlink" title="首先看一下分段的引入"></a>首先看一下分段的引入</h2><p>早期的8086处理器运算单元是16位的，也就是说，处理内存寻址的那部分指令集处理的也是16位的。而地址线是20位的。理论上，20位地址线寻址范围应该是1MB。但是由于指令集是16位的，所以也就不能直接使用这20位地址线。  </p>
-<h3 id="解决方法有2种"><a href="#解决方法有2种" class="headerlink" title="解决方法有2种"></a>解决方法有2种</h3><ul>
-<li>一种是，给CPU指令集增加一部分20位的指令集用来处理内存寻址，但是这会CPU内部结构不均匀（坏处网上我没搜到，反正肯定不好。我猜应该是，如果当这20位的指令集需要和16位的指令集进行交互时，那么就需要某种方式的映射，这会增加CPU功耗或者是拖慢CPU的速度）。</li>
-<li>另一种解决方法，CPU仍然使用16位指令集，增设一些16位的段寄存器。在把最终地址送上20位地址总线时，它会把某个段寄存器的16位放在地址总线的高16位，然后把指令集得到的16位地址放在低16位，那么相当于重叠了12位。但是，总能在20位的地址上模拟出1MB的访问空间。这就利用简单地加法模拟了一个映射，从而用16位的指令集使用了20位的地址线。这也就是为什么段的引入会加大寻址空间。</li>
+<h1 id="一、-BIOS-Basic-Input-Output-System-基本输入输出系统"><a href="#一、-BIOS-Basic-Input-Output-System-基本输入输出系统" class="headerlink" title="一、 BIOS (Basic Input Output System)基本输入输出系统"></a>一、 BIOS (Basic Input Output System)基本输入输出系统</h1><ol>
+<li>按下电源按钮触发CPU的reset引脚。CS寄存器会设值为0xffff;eip = 0x0000    。此时CPU会从内存的0xffff0处执行代码。此处就是一条跳转到BIOS的指令</li>
+<li>BIOS读取CMOS了解硬件情况，开机自检，并对硬件初始化，然后将控制权交给MBR程序。</li>
+</ol>
+<h1 id="二、MBR（Master-Boot-Record）主引导记录"><a href="#二、MBR（Master-Boot-Record）主引导记录" class="headerlink" title="二、MBR（Master Boot Record）主引导记录"></a>二、MBR（Master Boot Record）主引导记录</h1><ol>
+<li>MBR是在Boot Sector（512字节）里的446字节。那Boot Sector是什么呢，他是引导扇区，在磁盘上占512字节，其中包括MBR（446字节）、DPT（磁盘分区表64子节）、BRID（引导记录表示2字节）。</li>
+<li>BIOS会将Boot Sector里的所有内容读到地址是0x7c00的内存位置。（Boot Sector就是BIOS在读取CMOS时被设为启动设备的第一扇区）</li>
+<li>BIOS首先会检验BRID是不是0x55AA,是的话才会将控制权交给MBR。</li>
+<li>由于MBR只有446个字节，所以它只是个跳板，然后把控制权交给GRUB</li>
+</ol>
+<h1 id="三、-GRUB-（Grand-Unified-BootLoader）牛逼的统一引导加载器"><a href="#三、-GRUB-（Grand-Unified-BootLoader）牛逼的统一引导加载器" class="headerlink" title="三、 GRUB （Grand Unified BootLoader）牛逼的统一引导加载器"></a>三、 GRUB （Grand Unified BootLoader）牛逼的统一引导加载器</h1><ol>
+<li>BootLoader是什么呢？他是在操作系统内核运行前运行的一小段程序，他负责将操作系统的内核加载到内存，然后将电脑的控制权交给操作系统。同时还会搜集电脑的硬件信息、初始化硬件设备、安排内存布局等。</li>
+<li><p>GRUB的特点：</p>
+<ul>
+<li>动态可配置化的，它在启动时读取配置信息，且允许启动时修改。</li>
+<li>提供菜单供用户选择要启动的操作系统。</li>
+<li>支持多种语言、支持链式启动。</li>
+<li>拥有丰富的控制台命令与用户交互、支持的操作系统非常广泛。</li>
 </ul>
-<p>而80386CPU的指令集是32位，地址线也是32位，按理来说根本不需要分段来增大寻址空间。但是，80386到底是8086的一员，它还得兼容之前的实模式，所以，16位的段寄存器必须保存下来。既然已经不需要分段的空大空间能力，所以，inter处理器的开发商便基于16位寄存器开发出了保护模式。在保护模式下,它的段范围不再受限于64K，可以达到4G。这一下真正解放了软件工程师,他们不必再费尽心思去压缩程序规模，软件功能也因此迅速提升。</p>
-<h2 id="分段实现的功能："><a href="#分段实现的功能：" class="headerlink" title="分段实现的功能："></a>分段实现的功能：</h2><ol>
-<li>扩大寻址空间。</li>
-<li>实现保护模式</li>
+</li>
+<li><p>GRUB2的工作流程</p>
+<p>  它比较霸道，必须提供1M的内存空间，来放置他的核心代码，位置无所谓，但必须在2T以内，否则找不到。</p>
+<ul>
+<li>第一阶段：占用MBR的坑（这是对付BISO的唯一方法）。编译好的代码叫boot.img（512字节）；他去那1M的空间找diskboot.img代码。</li>
+<li>第二阶段：diskboot.img是第二阶段的代码，大小也是512字节。是GRUB核心文件的第一个扇区。这个阶段的代码就是继续将core.img文件余下的部分读到内存，然后继续执行。</li>
+<li>第三阶段：开始加载GRUB内核模块。这样做的好处是core.img可以做的很小，可配置性和可扩展性非常高。</li>
+<li><p>第四阶段：启动操作界面，供用户选择要启动的操作系统。</p>
+<p>（内核启动参数的的传递）</p>
+</li>
+</ul>
+</li>
 </ol>
-<p>保护模式会实现怎样的功能？  在保护模式下，一个地址空间是否可以被写入？可以被多少优先级的代码写入？是不是允许被执行等问题就显现出来了。例如，在还没有分页机制的时候，也就是没有多个进程利用多套虚拟地址空间使用同一个比如是4G的空间时，多个进程之间是如何共享内存的？如果没有保护，进程A访问了进程B的空间，并且修改了进程B的某个非常重要的参数，那么进程B可能会因此直接gg。程序员需要自己定义一个段，然后不允许其他进程访问。再例如，在面向对象的语言中，你可以把某个类的所有实例都写到一个段里，设置不是本类的成员方法不能对该段<br>进行访问，这样就可以很好地管理一个类。说了半天，也就是，实现一套保护机制十分重要。那么到底是怎么实现的呢？（参考网址 <a href="http://www.techbulo.com/708.html）" target="_blank" rel="external">http://www.techbulo.com/708.html）</a></p>
-<p>保护模式的实现除了CS,SS,DS,ES,FS,GS这6个段寄存器，还用到了GDT表和LDT表以及跟这两个表对应的两个寄存器：GDTR，LDTR。</p>
-<p>可能你现在想知道一个段的描述信息到底存放在哪，现在明确告诉你，对于某个段的描述信息来说，在内核中的某个线性地址，有一块连续内存，这块内存的起始地址可以由两个方法确定</p>
-<ol>
-<li>段寄存器中的段选择子 +  GDTR中的GDT的起始位置 = 一个段的描述信息的描述信息。</li>
-<li>LDTR指向的内存地址。</li>
-</ol>
-<p>LDT1和LDT2等就是一个段的描述信息。GTD中存放的就是一个段的描述信息的描述信息。<br>GDTＲ中存放GDT的起始地址，ＬＤＴＲ中存放某个段描述信息的起始地址。<br>段寄存器中存放GDT的索引。<br>而某个段描述信息中就有这个段的起始地址，终止地址，访问权限等。保护机制大功告成。</p>
-<p>但是linux并未使用如此细化的机制（参考网址：<a href="http://www.codesec.net/view/199560.html）" target="_blank" rel="external">http://www.codesec.net/view/199560.html）</a></p>
-<p>逻辑地址就是指令中的偏移量，程序使用的都是这个。本来在分段机制下，线性地址是逻辑地址加上由16位段寄存器和GDT找到段描述信息中段起始的值得来的。但linux内逻辑地址和线性地址是一样的，如何做到的呢？那就是，在linux下，使所有的段起始地址都为0，终止地址都为oxfffffff，也就是4GB。所以对于任何用户来说，用户代码段描述符和用户数据段描述符都是一样的，而当切换到内核态时，所有的内核代码段描述符和内核数据段描述符都是一样的。也就是说，所有进程的用户代码段都共享着一个段描述信息（由上面的方法找到），所有的用户数据段也都共享。内核的代码段和数据段也一样。</p>
-<p>并且，只是通过段描述符中的DPL取值来进行权限管理。比如，内核代码段和数据段的DPL是0，那么就说明只有CPL为0时才能访问。而用户代码段和数据段的DPL为3。权限保护仅此而已，只是区分了内核态和用户态，并没有在多个进程之间进行保护。而进程之间更加细化的保护是页管理中进行的。</p>
+<h1 id="四、加载内核"><a href="#四、加载内核" class="headerlink" title="四、加载内核"></a>四、加载内核</h1><ol>
+<li>Bootloader在保护模式下（32位字长、32位寻址）直接交权给内核。</li>
+<li>内核调用startup_32对自己解压缩。</li>
+<li><p>跳转到startup_32这个函数继续执行。（注：这两个函数虽然同名，但是是不一样的）。 </p>
 <blockquote>
-<p>对分段分页的总结：<a href="http://blog.sina.com.cn/s/blog_5420e00001013b7o.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_5420e00001013b7o.html</a></p>
+<p> 这个startup_32函数它代表了Linux的第一个进程process0的开始。这里，他会决定Linux的布局；Linux了解了自己将要与什么样的CPU在一起；会把由BIOS提供和BootLoader们整理的资料放入内存的第一个分页；同时为中断做好准备；如果是64位系统，将把长模式开启，最后会跳到Linux内核的主函数start_kernel。开启内核的生命之旅。</p>
 </blockquote>
-<p>这里有一个问题，分页既然能实现更细化的权限访问控制，那么就意味着分段的这点功能分页也完全能实现。那么为什么还非要强行使用分段，把逻辑地址转换为虚拟地址（线性地址），再使用分段，将虚拟地址再转换为物理地址？为什么不直接使用分页机制？</p>
-<p>因为linux是一个可以兼容多平台的操作系统。其中涉及到了对CPU的兼容。有些CPU，比如Intel的CPU，由于一是为了兼容其以前版本的CPU，二是由于分段存在了很长时间后才出现了分页，所以，CPU指令集中对寻址的指令会有这样一种逻辑：先分段，将逻辑转换为线性，再分页，将线性转换为物理。指令集使用的是逻辑地址，而Intel处理器对逻辑地址的定义是： 【段标识符：段内偏移量】， 也就是说，它硬性地规定了你的程序编译为二进制也就是机器语言后，必定是上面形式的逻辑地址，当程序运行后，它会把段内偏移量和由段标识符找到的段起始地址相加得到线性地址，然后放到地址总线上。也就是必须通过分段机制，才能得到线性地址，然后才能进行页映射。所以，linux为了兼容IntelCPU，也就必须使用分段机制。但是有些CPU，完全没有分段的概念，它的指令集里只有线性地址。那么这种矛盾怎么解决呢？linux巧妙地绕过了分段机制（让所有段起始地址为0，大小为4GB），而且还顺便利用了一下分段机制实现了用户和内核的分离（上面有讲）分页</p>
-<h1 id="分页管理"><a href="#分页管理" class="headerlink" title="分页管理"></a>分页管理</h1><p>分页管理其实比分段管理简单，要了解的概念也能少一点。首先，分页管理是将线性地址转换为物理地址。</p>
-<p>上面分别是二级映射结构和四级映射结构的寻址方式。这里还是有多个硬件平台需要的映射结构不同。比如i386处理器支持二级映射方式，而有些CPU则需要三级甚至是四级。linux为了兼容各种平台，统一使用四级页表。具体二级和四级是怎么管理的.</p>
-<blockquote>
-<p>参考：<a href="http://blog.sina.com.cn/s/blog_5420e00001013b7o.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_5420e00001013b7o.html</a></p>
-</blockquote>
-<p>CPU将线性地址放到地址总线上，但不是直接使用这个线性地址操作内存，它会先经过MMU。ＣＲ３寄存器存放了页目录的起始地址，ＭＭＵ根据页目录的信息，将收到的线性地址转换为物理地址，再放到地址总线上，进行读写内存操作。</p>
-<h3 id="分页实现的更细化的保护："><a href="#分页实现的更细化的保护：" class="headerlink" title="分页实现的更细化的保护："></a>分页实现的更细化的保护：</h3><ol>
-<li>使用页表本身进行越界保护。每个进程只能映射到自己的物理内存。</li>
-<li>在页表项中设置存取控制位。</li>
-<li>在页表项中设置访问级别。</li>
+</li>
+<li><p>start_kernel函数位于init/mian.c这个文件中。它大部分时间是在为Linux内核准备必要的数据结构。比如：用于内存管理的数据结构，用于任务调度的数据结构，用于处理中断的数据结构，用于处理文件系统的数据结构。经过这些初始化后，Linux此时已经具有了一个操作系统应该具备的功能。</p>
+</li>
+<li>start_kernel内核线程会创建一个名为kernel_init的内核线程。然后进入自己的归宿cpu_idle函数,进入无休止的循环当中。这个cpu_idle函数就是我们常见的CPU占用率经常是99%的进程。进程PID为0.它会一直调用CPU的idle指令，让CPU降温且省电，优先级是很低的。</li>
+<li>kernel_init内核线程是新的Linux这么叫的，老得叫init内核线程。这是Linux的第二个进程，也是init的PID一定是1的由来。（在新的内核代码中，由于必须在创建kernel_init之前创建另一个内核线程来做一些更重要的事，所以不得不先创建kernel_init，并把它锁起来，然后再创建新的内核线程，然后等他执行完后再解锁。否则init的PID会变为2）。</li>
+<li>kernel_init内核线程比较重要的工作就是让Linux内核开始与外面进行沟通。比如：给硬件加载驱动程序、初始化网络堆栈、在多CPU系统中让其他CPU开始工作，寻找用户的根文件系统。</li>
+<li>kernel_init内核线程等一切都稳妥后，会调用用户空间的第一个进程init程序。此时，内核初始化完成。</li>
 </ol>
-<h3 id="分页的好处："><a href="#分页的好处：" class="headerlink" title="分页的好处："></a>分页的好处：</h3><p>实现了虚拟存储器，可以更高效地管理内存。</p>
-<h3 id="虚拟存储器技术"><a href="#虚拟存储器技术" class="headerlink" title="虚拟存储器技术"></a>虚拟存储器技术</h3><p>根据程序的局部性原理:</p>
-<ol>
-<li>时间局部性：由于迭代循环等的存在，在ＣＰＵ访问后的单元在不久之后任然会受到多次循环访问。</li>
-<li>空间局部性：对进程的某一空间的表或者对战数据进行集中访问。　　　　</li>
-<li>顺序局部性：对于程序代码的执行，是顺序执行。即便使用了跳转指令跳转到另外一块程序，那么它任然会在跳转到的那块程序顺序访问。</li>
-</ol>
-<p>也就是说，在某一时间内，程序只会被访问到一部分，那么只需要把这部分装入内存就行了，其他的可以先暂时在磁盘上存放。
-　　　</p>
-<h3 id="虚拟存储技术需要考虑的点："><a href="#虚拟存储技术需要考虑的点：" class="headerlink" title="虚拟存储技术需要考虑的点："></a>虚拟存储技术需要考虑的点：</h3><ol>
-<li>调入策略：请求页式管理　预调入</li>
-<li>分配策略：分配空闲内存</li>
-<li>置换策略：随机淘汰，轮询，先进先出，最近少用</li>
-</ol>
-<h1 id="抖动问题："><a href="#抖动问题：" class="headerlink" title="抖动问题："></a>抖动问题：</h1><p>由于设计问题，给一个进程在内存中分配的页面非常少，内存页面经常出现不足，就需要换出某些页。而如果置换算法设计的方法或者流程不好，则可能刚换出的页马上又要用到，频繁地进行这样的操作，使ＣＰＵ在整个时间片中大部分时间用在了页面换出换入上。这宗现象成为抖动。</p>
-<h2 id="消除方法："><a href="#消除方法：" class="headerlink" title="消除方法："></a>消除方法：</h2><ol>
-<li>根据实际情况，设计出一个合理的工作集。</li>
-<li>挂起某些进程。</li>
-<li>缺页频度法：根据缺页发生的频率动态地更改给进程分配的空间。</li>
+<h1 id="五、-启动init进程并确定运行等级"><a href="#五、-启动init进程并确定运行等级" class="headerlink" title="五、 启动init进程并确定运行等级"></a>五、 启动init进程并确定运行等级</h1><ol>
+<li>内核通过initramfs启动init进程。</li>
+<li>initramfs是一个使用gzip压缩的cpi_o打包文件，内核会将它的内容装入一个tmpfs，这就不需要附带任何文件系统驱动就能工作了。</li>
+<li>initramfs直接启动init进程，initramfs是由bootloader准备好，告诉内核它在什么位置。内核知道后，直接启动initramfs中的init进程。接下来找根文件系统就交给init进程了。</li>
+<li>init进程会根据用户设定的一个运行级别来对Linux系统进行初始化。比如：启动对应运行级别的服务进程，配置网络等。init进程会接受用户的 CTRL + Alt + Del 令Linux系统重新启动；也可以切换运行级别。当用户要关闭Linux系统时，init进程会将未来得及保存的文件保存好。init会收养孤儿进程。还可以保护某些进程不被kill。是Linux的守护神。</li>
 </ol>
 
       
@@ -526,7 +519,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/内存管理/" rel="tag"># 内存管理</a>
+            <a href="/tags/启动过程/" rel="tag"># 启动过程</a>
           
             <a href="/tags/LINUX/" rel="tag"># LINUX</a>
           
@@ -541,8 +534,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/05/linux-杂记/" rel="next" title="linux 进程与线程">
-                <i class="fa fa-chevron-left"></i> linux 进程与线程
+              <a href="/2017/08/27/代码规范与整洁之道/" rel="next" title="代码规范与整洁之道">
+                <i class="fa fa-chevron-left"></i> 代码规范与整洁之道
               </a>
             
           </div>
@@ -550,10 +543,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/05/linux-基础常识/" rel="prev" title="linux 基础常识">
-                linux 基础常识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,8 +574,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/05/linux-内存管理/"
-           data-title="linux 内存管理" data-url="http://onaple.duoshuo.com/2017/03/05/linux-内存管理/">
+      <div class="ds-thread" data-thread-key="2017/09/02/LINUX启动过程/"
+           data-title="LINUX启动过程" data-url="http://onaple.duoshuo.com/2017/09/02/LINUX启动过程/">
       </div>
     
   </div>
@@ -706,7 +695,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU位数和操作系统位数的关系："><span class="nav-number">1.</span> <span class="nav-text">CPU位数和操作系统位数的关系：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分段"><span class="nav-number">2.</span> <span class="nav-text">分段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#首先看一下分段的引入"><span class="nav-number">2.1.</span> <span class="nav-text">首先看一下分段的引入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法有2种"><span class="nav-number">2.1.1.</span> <span class="nav-text">解决方法有2种</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分段实现的功能："><span class="nav-number">2.2.</span> <span class="nav-text">分段实现的功能：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分页管理"><span class="nav-number">3.</span> <span class="nav-text">分页管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分页实现的更细化的保护："><span class="nav-number">3.0.1.</span> <span class="nav-text">分页实现的更细化的保护：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分页的好处："><span class="nav-number">3.0.2.</span> <span class="nav-text">分页的好处：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟存储器技术"><span class="nav-number">3.0.3.</span> <span class="nav-text">虚拟存储器技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟存储技术需要考虑的点："><span class="nav-number">3.0.4.</span> <span class="nav-text">虚拟存储技术需要考虑的点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#抖动问题："><span class="nav-number">4.</span> <span class="nav-text">抖动问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消除方法："><span class="nav-number">4.1.</span> <span class="nav-text">消除方法：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、-BIOS-Basic-Input-Output-System-基本输入输出系统"><span class="nav-number">1.</span> <span class="nav-text">一、 BIOS (Basic Input Output System)基本输入输出系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、MBR（Master-Boot-Record）主引导记录"><span class="nav-number">2.</span> <span class="nav-text">二、MBR（Master Boot Record）主引导记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、-GRUB-（Grand-Unified-BootLoader）牛逼的统一引导加载器"><span class="nav-number">3.</span> <span class="nav-text">三、 GRUB （Grand Unified BootLoader）牛逼的统一引导加载器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、加载内核"><span class="nav-number">4.</span> <span class="nav-text">四、加载内核</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、-启动init进程并确定运行等级"><span class="nav-number">5.</span> <span class="nav-text">五、 启动init进程并确定运行等级</span></a></li></ol></div>
             
 
           </div>

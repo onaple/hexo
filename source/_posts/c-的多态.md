@@ -3,10 +3,10 @@ title: c++ 多态
 comments: true
 tags:
   - 多态
-  - c++
+  - C++
   - 面向对象
 categories:
-  - c++
+  - C++
 date: 2017-03-05 16:34:59
 update: 2017-03-05 16:34:59
 ---

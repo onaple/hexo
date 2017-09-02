@@ -2,10 +2,10 @@
 title: linux 文件系统
 comments: true
 tags:
-  - linux
+  - LINUX
   - 文件系统
 categories:
-  - linux
+  - LINUX
 date: 2017-03-05 18:00:46
 update: 2017-03-05 18:00:46
 

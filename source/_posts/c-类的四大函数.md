@@ -2,10 +2,10 @@
 title: c++ 类的四大函数
 comments: true
 tags:
-  - c++
+  - C++
   - 类
 categories:
-  - c++
+  - C++
 date: 2017-03-05 17:33:19
 update: 2017-03-05 17:33:19
 ---

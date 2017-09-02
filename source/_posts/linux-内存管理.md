@@ -2,10 +2,10 @@
 title: linux 内存管理
 comments: true
 tags:
-  - linux
+  - LINUX
   - 内存管理
 categories:
-  - linux
+  - LINUX
 date: 2017-03-05 18:00:46
 update: 2017-03-05 18:00:46
 

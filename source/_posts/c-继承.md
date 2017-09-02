@@ -2,10 +2,10 @@
 title: c++ 继承
 comments: true
 tags:
-  - c++
+  - C++
   - 继承
 categories:
-  - c++
+  - C++
 date: 2017-03-05 16:59:34
 update: 2017-03-05 16:59:34
 

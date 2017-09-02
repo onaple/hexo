@@ -2,11 +2,11 @@
 title: linux 进程与线程
 comments: true
 tags:
-  - linux
+  - LINUX
   - 进程
   - 线程
 categories:
-  - linux
+  - LINUX
 date: 2017-03-05 18:00:46
 update: 2017-03-05 18:00:46
 ---

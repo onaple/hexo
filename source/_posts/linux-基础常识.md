@@ -2,9 +2,9 @@
 title: linux 基础常识
 comments: true
 tags:
-  - linux
+  - LINUX
 categories:
-  - linux
+  - LINUX
 date: 2017-03-05 18:18:13
 update: 2017-03-05 18:18:13
 ---

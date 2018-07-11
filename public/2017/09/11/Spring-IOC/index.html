@@ -1,0 +1,1035 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring,IOC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Spring是什么 Spring是一个容器，负责对象的创建。 Spring的核心是控制反转(IoC)和面向切面(AOP)。 简单来说，Spring 是一个分层的 JavaSE/EEfull-stack(一站式) 轻量级 开源框架。  Spring的优势 方便解耦，简化开发：Spring就是一个大工厂，可以将所有对象创建和依赖关系维护，交给 Spring 管理。 AOP编程的支持：Spring提供面">
+<meta name="keywords" content="Spring,IOC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring IOC">
+<meta property="og:url" content="http://onaple.duoshuo.com/2017/09/11/Spring-IOC/index.html">
+<meta property="og:site_name" content="onaple‘s Blog">
+<meta property="og:description" content="Spring是什么 Spring是一个容器，负责对象的创建。 Spring的核心是控制反转(IoC)和面向切面(AOP)。 简单来说，Spring 是一个分层的 JavaSE/EEfull-stack(一站式) 轻量级 开源框架。  Spring的优势 方便解耦，简化开发：Spring就是一个大工厂，可以将所有对象创建和依赖关系维护，交给 Spring 管理。 AOP编程的支持：Spring提供面">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-11T00:41:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring IOC">
+<meta name="twitter:description" content="Spring是什么 Spring是一个容器，负责对象的创建。 Spring的核心是控制反转(IoC)和面向切面(AOP)。 简单来说，Spring 是一个分层的 JavaSE/EEfull-stack(一站式) 轻量级 开源框架。  Spring的优势 方便解耦，简化开发：Spring就是一个大工厂，可以将所有对象创建和依赖关系维护，交给 Spring 管理。 AOP编程的支持：Spring提供面">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://onaple.duoshuo.com/2017/09/11/Spring-IOC/"/>
+
+
+
+
+
+  <title> Spring IOC | onaple‘s Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?979c5c7c8651356fd2b2fc892b7537af";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">onaple‘s Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">Good good study, day day up...</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://onaple.duoshuo.com/2017/09/11/Spring-IOC/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="onaple">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="onaple‘s Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="onaple‘s Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring IOC
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-11T08:39:59+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SPRING/" itemprop="url" rel="index">
+                    <span itemprop="name">SPRING</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/11/Spring-IOC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/11/Spring-IOC/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Spring是什么"><a href="#Spring是什么" class="headerlink" title="Spring是什么"></a>Spring是什么</h2><ul>
+<li>Spring是一个容器，负责对象的创建。</li>
+<li>Spring的核心是控制反转(IoC)和面向切面(AOP)。</li>
+<li>简单来说，Spring 是一个分层的 JavaSE/EEfull-stack(一站式) 轻量级 开源框架。</li>
+</ul>
+<h2 id="Spring的优势"><a href="#Spring的优势" class="headerlink" title="Spring的优势"></a>Spring的优势</h2><ol>
+<li>方便解耦，简化开发：<br>Spring就是一个大工厂，可以将所有对象创建和依赖关系维护，交给 Spring 管理。</li>
+<li>AOP编程的支持：Spring提供面向切面编程，可以方便的实现对程序进行权限拦截、运行监控等功能。</li>
+<li>声明式事务的支持：只需要通过配置就可以完成对事务的管理，而无需手动编程。</li>
+<li>方便程序的测试：Spring对Junit4支持，可以通过注解方便的测试Spring程序。</li>
+<li>方便集成各种优秀框架：Spring不排斥各种优秀的开源框架，其内部提供了对各种优秀框架(如:Struts、Hibernate、MyBatis、Quartz 等)的直接支持 降低 JavaEE API 的使用难度。<br>Spring对JavaEE开发中非常难用的一些API(JDBC、JavaMail、远程调用等)，都提供了封装，使这些 API 应用难度大大降低。</li>
+</ol>
+<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><ol>
+<li>IOC控制反转,将对象的创建权交给了Spring。</li>
+<li>DI Dependency Injection 依赖注入，需要有 IOC 的环境，Spring创建这个类的过程中,Spring将类的依赖的属性设置进去.</li>
+</ol>
+<h2 id="BeanFactory-和-ApplicationContext-的区别"><a href="#BeanFactory-和-ApplicationContext-的区别" class="headerlink" title="BeanFactory 和 ApplicationContext 的区别"></a>BeanFactory 和 ApplicationContext 的区别</h2><ol>
+<li>BeanFactory（已过时）:Spring原始接口。针对原始接口的实现类功能较为单一；BeanFactory接口实现类的容器。特点是每次在获得对象时才会创建对象，适应与手机端这种内存小的环境。</li>
+<li>ApplicationContext（继承与BeanFactory）: 在加载applicationContext.xml(容器启动)时候就会创建。适用于web项目。</li>
+<li>ApplicatioContext 接口有两个实现类:每次容器启动时就会创建容器中配置的所有对象.并提供更多功能。<ul>
+<li>ClassPathXmlApplicationContext :加载类路径下Spring的配置文件。</li>
+<li>FileSystemXmlApplicationContext :加载本地磁盘下Spring的配置文件。</li>
+</ul>
+</li>
+</ol>
+<h2 id="bean的配置"><a href="#bean的配置" class="headerlink" title="bean的配置"></a>bean的配置</h2><ol>
+<li>id :Bean起个名字；在约束中采用ID的唯一约束。必须以字母开始，可以使用字母、数字、连字符、下划线、句号、冒号。 <strong>id:不能出现特殊字符</strong>。</li>
+<li>name:Bean起个名字；没有采用ID的约束。name:出现特殊字符.如果<bean>没有id的话 , name可以当做id使用。推荐使用name。</bean></li>
+</ol>
+<h2 id="scope-属性-Bean-的作用范围"><a href="#scope-属性-Bean-的作用范围" class="headerlink" title="scope 属性:Bean 的作用范围"></a>scope 属性:Bean 的作用范围</h2><ul>
+<li>singleton:默认值，单例的。</li>
+<li>prototype:多例的。</li>
+<li>request:WEB项目中，Spring创建一个Bean的对象,将对象存入到request域中。</li>
+<li>session :WEB项目中，Spring创建一个Bean的对象，将对象存入到session域中。</li>
+<li>globalSession :WEB项目中,应用在Porlet环境.如果没有Porlet环境globalSession相当于session.</li>
+</ul>
+<h2 id="Bean-的生命周期的配置"><a href="#Bean-的生命周期的配置" class="headerlink" title="Bean 的生命周期的配置"></a>Bean 的生命周期的配置</h2><p>通过配置<bean>标签上的 init-method 作为 Bean的初始化的时候执行的方法，配置destroy-method作为Bean的销毁的时候执行的方法。销毁方法想要执行，需要是单例创建的 Bean 而且在工厂关闭的时候，Bean 才会被销毁。</bean></p>
+<h2 id="Spring-生成-Bean-的时候三种方式"><a href="#Spring-生成-Bean-的时候三种方式" class="headerlink" title="Spring 生成 Bean 的时候三种方式"></a>Spring 生成 Bean 的时候三种方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 方式一:无参数的构造方法的实例化 --&gt;</div><div class="line">&lt;bean id=&quot;bean1&quot; class=&quot;spring.demo3.Bean1&quot;&gt;&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 方式二:静态工厂实例化 Bean --&gt;</div><div class="line">&lt;bean id=&quot;bean2&quot; class=&quot;spring.demo3.Bean2Factory&quot; factory-method=&quot;getBean2&quot;/&gt;</div><div class="line"></div><div class="line">&lt;!-- 方式三:实例工厂实例化 Bean --&gt;</div><div class="line">&lt;bean id=&quot;bean3Factory&quot; class=&quot;spring.demo3.Bean3Factory&quot;&gt;&lt;/bean&gt; </div><div class="line">&lt;bean id=&quot;bean3&quot; factory-bean=&quot;bean3Factory&quot; factory-method=&quot;getBean3&quot;&gt;&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h2 id="Spring-的-Bean-的属性注入"><a href="#Spring-的-Bean-的属性注入" class="headerlink" title="Spring 的 Bean 的属性注入:"></a>Spring 的 Bean 的属性注入:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 第一种:构造方法的方式 --&gt;</div><div class="line">&lt;bean id=&quot;car&quot; class=&quot;spring.demo4.Car&quot;&gt;</div><div class="line">&lt;constructor-arg name=&quot;name&quot; value=&quot;保时捷&quot;/&gt;</div><div class="line">&lt;constructor-arg name=&quot;price&quot; value=&quot;1000000&quot;/&gt; &lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- 第二种:set 方法的方式 --&gt;</div><div class="line">&lt;bean id=&quot;car2&quot; class=&quot;spring.demo4.Car2&quot;&gt;</div><div class="line">&lt;property name=&quot;name&quot; value=&quot;奇瑞 QQ&quot;/&gt;</div><div class="line">&lt;property name=&quot;price&quot; value=&quot;40000&quot;/&gt; &lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;!-- p名称空间的属性注入的方式 --&gt;</div><div class="line">&lt;bean id=&quot;car2&quot; class=&quot;spring.demo4.Car2&quot; p:name=&quot;宝马7&quot; p:price=&quot;1200000&quot;/&gt;</div><div class="line">&lt;bean id=&quot;person&quot; class=&quot;spring.demo4.Person&quot; p:name=&quot;张三&quot; p:car2-ref=&quot;car2&quot;/&gt;</div><div class="line"></div><div class="line"></div><div class="line">SpEL:Spring Expression Language. 语法:#&#123; SpEL &#125;</div><div class="line">&lt;!-- SpEL 的注入的方式 --&gt;</div><div class="line">&lt;bean id=&quot;car2&quot; class=&quot;spring.demo4.Car2&quot;&gt;</div><div class="line">&lt;property name=&quot;name&quot; value=&quot;#&#123;&apos;奔驰&apos;&#125;&quot;/&gt;</div><div class="line">&lt;property name=&quot;price&quot; value=&quot;#&#123;800000&#125;&quot;/&gt; &lt;/bean&gt;</div><div class="line">&lt;bean id=&quot;person&quot; class=&quot;spring.demo4.Person&quot;&gt; </div><div class="line">&lt;property name=&quot;name&quot; value=&quot;#&#123;&apos;冠希&apos;&#125;&quot;/&gt;</div><div class="line">&lt;property name=&quot;car2&quot; value=&quot;#&#123;car2&#125;&quot;/&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;bean id=&quot;carInfo&quot; class=&quot;spring.demo4.CarInfo&quot;&gt;&lt;/bean&gt;</div><div class="line">引用了另一个类的属性</div><div class="line">&lt;bean id=&quot;car2&quot; class=&quot; </div><div class="line">spring.demo4.Car2&quot;&gt; &lt;!-- &lt;property name=&quot;name&quot; value=&quot;#&#123;&apos;奔驰&apos;&#125;&quot;/&gt; --&gt;</div><div class="line">        &lt;property name=&quot;name&quot; value=&quot;#&#123;carInfo.carName&#125;&quot;/&gt;</div><div class="line">        &lt;property name=&quot;price&quot; value=&quot;#&#123;carInfo.calculatePrice()&#125;&quot;/&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line">&lt;!-- Spring 的复杂类型的注入===================== --&gt;</div><div class="line">&lt;bean id=&quot;collectionBean&quot; class=&quot;spring.demo5.CollectionBean&quot;&gt;</div><div class="line">&lt;!-- 数组类型的属性 --&gt; </div><div class="line">&lt;property name=&quot;arrs&quot;&gt;</div><div class="line">&lt;list&gt;</div><div class="line"> &lt;value&gt;会希&lt;/value&gt;</div><div class="line"> &lt;value&gt;冠希&lt;/value&gt;</div><div class="line"> &lt;value&gt;天一&lt;/value&gt;</div><div class="line">&lt;/list&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;!-- 注入 List 集合的数据 --&gt; &lt;property name=&quot;list&quot;&gt;</div><div class="line">&lt;list&gt;</div><div class="line"> &lt;value&gt;芙蓉&lt;/value&gt; &lt;value&gt;如花&lt;/value&gt; &lt;value&gt;凤姐&lt;/value&gt;</div><div class="line">&lt;/list&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;!-- 注入 Map 集合 --&gt; &lt;property name=&quot;map&quot;&gt;</div><div class="line">&lt;map&gt;</div><div class="line">&lt;entry key=&quot;aaa&quot; value=&quot;111&quot;/&gt; &lt;entry key=&quot;bbb&quot; value=&quot;222&quot;/&gt; &lt;entry key=&quot;ccc&quot; value=&quot;333&quot;/&gt;</div><div class="line">&lt;/map&gt;</div><div class="line">&lt;/property&gt;</div><div class="line"></div><div class="line">&lt;!-- Properties 的注入 --&gt; &lt;property name=&quot;properties&quot;&gt;</div><div class="line">&lt;props&gt;</div><div class="line">&lt;prop key=&quot;username&quot;&gt;root&lt;/prop&gt;</div><div class="line"> &lt;prop key=&quot;password&quot;&gt;123&lt;/prop&gt;</div><div class="line">&lt;/props&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&lt;!-- 注入对象类型的属性 --&gt;</div><div class="line">&lt;bean id=&quot;person&quot; class=&quot;spring.demo4.Person&quot;&gt;</div><div class="line">&lt;property name=&quot;name&quot; value=&quot;会希&quot;/&gt;</div><div class="line">&lt;!-- ref 属性:引用另一个 bean 的 id 或 name --&gt; &lt;property name=&quot;car2&quot; ref=&quot;car2&quot;/&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+<h2 id="Spring-的分配置文件的开发"><a href="#Spring-的分配置文件的开发" class="headerlink" title="Spring 的分配置文件的开发"></a>Spring 的分配置文件的开发</h2><p>一种:创建工厂的时候加载多个配置文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ApplicationContext applicationContext = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;,&quot;applicationContext2.xml&quot;);</div></pre></td></tr></table></figure>
+<p>二种:在一个配置文件中包含另一个配置文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;import resource=&quot;applicationContext2.xml&quot;&gt;&lt;/import&gt;</div></pre></td></tr></table></figure>
+<h3 id="Spring要导入的基础包"><a href="#Spring要导入的基础包" class="headerlink" title="Spring要导入的基础包"></a>Spring要导入的基础包</h3><ol>
+<li>beans</li>
+<li>context</li>
+<li>core</li>
+<li>expression</li>
+<li>commons-logging</li>
+<li>log4j</li>
+</ol>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><ol>
+<li><p>@Component:组件.(作用在类上)<br>Spring 中提供@Component 的三个衍生注解:(功能目前来讲是一致的)</p>
+<ul>
+<li>@Controller</li>
+<li>@Service</li>
+<li>@Repository<br>这三个注解是为了让标注类本身的用途清晰，Spring在后续版本会对其增强</li>
+</ul>
+</li>
+<li><p>属性注入的注解:(使用注解注入的方式,可以不用提供 set 方法.)</p>
+<ul>
+<li>@Value :用于注入普通类型.</li>
+<li>@Autowired :自动装配: 默认按类型进行装配. </li>
+<li>按名称注入:@Qualifier:强制使用名称注入. </li>
+<li>@Resource 相当于: @Autowired 和@Qualifier 一起使用.</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatRewardImage.png" alt="onaple WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipayRewardImage.jpg" alt="onaple Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/IOC/" rel="tag"># IOC</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/09/spring/" rel="next" title="spring">
+                <i class="fa fa-chevron-left"></i> spring
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/17/Spring-MVC/" rel="prev" title="Spring MVC">
+                Spring MVC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/11/Spring-IOC/"
+           data-title="Spring IOC" data-url="http://onaple.duoshuo.com/2017/09/11/Spring-IOC/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="onaple" />
+          <p class="site-author-name" itemprop="name">onaple</p>
+          <p class="site-description motion-element" itemprop="description">Talk is cheap, show me the code.  ——Linus Torvalds</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/onaple" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/aoo_wangxu" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring是什么"><span class="nav-number">1.</span> <span class="nav-text">Spring是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的优势"><span class="nav-number">2.</span> <span class="nav-text">Spring的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC"><span class="nav-number">3.</span> <span class="nav-text">IOC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeanFactory-和-ApplicationContext-的区别"><span class="nav-number">4.</span> <span class="nav-text">BeanFactory 和 ApplicationContext 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bean的配置"><span class="nav-number">5.</span> <span class="nav-text">bean的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scope-属性-Bean-的作用范围"><span class="nav-number">6.</span> <span class="nav-text">scope 属性:Bean 的作用范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bean-的生命周期的配置"><span class="nav-number">7.</span> <span class="nav-text">Bean 的生命周期的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-生成-Bean-的时候三种方式"><span class="nav-number">8.</span> <span class="nav-text">Spring 生成 Bean 的时候三种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-的-Bean-的属性注入"><span class="nav-number">9.</span> <span class="nav-text">Spring 的 Bean 的属性注入:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-的分配置文件的开发"><span class="nav-number">10.</span> <span class="nav-text">Spring 的分配置文件的开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring要导入的基础包"><span class="nav-number">10.1.</span> <span class="nav-text">Spring要导入的基础包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注解"><span class="nav-number">11.</span> <span class="nav-text">注解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">onaple</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"onaple"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
